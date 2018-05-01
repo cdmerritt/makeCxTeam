@@ -32,15 +32,16 @@ import java.util.Base64;
 
 public class makeCxTeam 
 {
-	static String SERVERURI = "http://localhost/CxWebInterface/Portal/CxWebService.asmx";
-	static String CxSessionID = null;
-	static boolean verbose = false;
-	static String un = "admin@cx";
-	static String pw = "admin";
-	static String pw_enc = "hello";
-	static String enk = Properties.get();
-	static String constCryptoAlgorithm = "Blowfish";
-	static boolean https = false;
+	public static String VERSION = "1.2";
+	public static String SERVERURI = "http://localhost/CxWebInterface/Portal/CxWebService.asmx";
+	public static String CxSessionID = null;
+	public static boolean verbose = false;
+	public static String un = "admin@cx";
+	public static String pw = "admin";
+	public static String pw_enc = "hello";
+	public static String enk = Properties.get();
+	public static String constCryptoAlgorithm = "Blowfish";
+	public static boolean https = false;
 	
 	public static void main(String[] args) 
 	{
@@ -55,7 +56,7 @@ public class makeCxTeam
 		{
 			System.out.println("makeCxTeam:  Adds a team to Checkmarx");
 			System.out.println("Written by Chris Merritt (chris.merritt@checkmarx.com)");
-			System.out.println("Last updated 08 September 2017 1510");
+			System.out.println(VERSION + " - Last updated 08 September 2017 1510");
 			System.out.println();
 			System.out.println("makeCxTeam [full team path to add] [verbose: true|false] [cxusername] [cxpasswordEnc] [CxServer URL]");
 			System.out.println("makeCxTeam SP\\Aviation\\Alpha\\0 false admin@cx passwordEnc http://localhost");
@@ -75,7 +76,7 @@ public class makeCxTeam
 		}//end catch
 	}//end encryptPassword
 
-	private static void subMain(String[] args)
+	public static void subMain(String[] args)
 	{
 		un = args[2];
 		pw = args[3];
@@ -97,7 +98,7 @@ public class makeCxTeam
 		System.out.println(confirmNewTeam(newTeam));
 	}//end subMain
 	
-	private static String confirmNewTeam(String team)
+	public static String confirmNewTeam(String team)
 	{
 		SOAPMessage teamTree = getHirearchyGroupTree();
 		Document d = parseXml(teamTree);
@@ -115,7 +116,7 @@ public class makeCxTeam
 			return "FAILED";
 	}//end confirmNewTeam
 
-	private static void checkAndAddNodes(String path)
+	public static void checkAndAddNodes(String path)
 	{
 		String[] pathNodes = path.split("\\\\");
 		path = "";
@@ -146,7 +147,7 @@ public class makeCxTeam
 		}//end for
 	}//end checkAndAddNodes
 	
-	private static String getParentIDifPathDoesNotExist(String path, Document d)
+	public static String getParentIDifPathDoesNotExist(String path, Document d)
 	{
 		String parentID = null;
 		boolean flag = false;
@@ -197,7 +198,7 @@ public class makeCxTeam
 			return "ERROR";
 	}//end getParentIDifPathDoesNotExist
 	
-	private static SOAPMessage getHirearchyGroupTree()
+	public static SOAPMessage getHirearchyGroupTree()
 	{
 		try
 		{
@@ -219,7 +220,7 @@ public class makeCxTeam
 		}//end catch
 	}//end getHirearchyGroupTree
 	
-	private static SOAPMessage createNewTeam(String parentID, String newTeamName)
+	public static SOAPMessage createNewTeam(String parentID, String newTeamName)
 	{
 		try
 		{
@@ -243,7 +244,7 @@ public class makeCxTeam
 		}//end catch
 	}//end createNewTeam
 	
-	private static SOAPMessage buildSOAPMessage(String message)
+	public static SOAPMessage buildSOAPMessage(String message)
 	{
 		try
 		{
@@ -258,7 +259,7 @@ public class makeCxTeam
 		}//end catch
 	}//end buildSOAP Message
 	
-	private static String getValue(SOAPMessage message, String begintag, String endtag)
+	public static String getValue(SOAPMessage message, String begintag, String endtag)
 	{
 		//This is the poor-man's way of retrieving a value from a SOAP response.
 		
@@ -277,7 +278,7 @@ public class makeCxTeam
 		}//end catch
 	}//end getValue
 	
-	private static SOAPMessage getSessionID()
+	public static SOAPMessage getSessionID()
 	{
 		//Any SOAP request sent to Checkmarx must have a valid session ID.
 		//This method crafts the request to get a session ID from Checkmarx
@@ -307,7 +308,7 @@ public class makeCxTeam
 		}//end catch
 	}//end getSessionID
 
-	private static SOAPMessage send(SOAPMessage sm)
+	public static SOAPMessage send(SOAPMessage sm)
 	{
 		if(https)
 			return sendSecure(sm);
@@ -361,7 +362,7 @@ public class makeCxTeam
 	    return null;
 	}//end sendSecure
 
-	private static Document parseXml(SOAPMessage message)
+	public static Document parseXml(SOAPMessage message)
     {
 		//This method converts the SOAP response to an XML document so that it may be parsed
         try
@@ -381,7 +382,7 @@ public class makeCxTeam
         }//end catch
     }//end parseXml
 	
-	private static String getWholeMessage(SOAPMessage message)
+	public static String getWholeMessage(SOAPMessage message)
 	{
 		//This method returns a string representation of the entire SOAP response from Checkmarx
 		try
